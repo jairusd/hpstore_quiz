@@ -1,0 +1,16 @@
+@import './globals';
+
+@include react-md-everything;
+
+.card-station {
+  margin-top: 30px;
+}
+
+.clear-search {
+  top: 9px;
+}
+
+.date-picker-container {
+  display: flex;
+  align-items: center;
+}

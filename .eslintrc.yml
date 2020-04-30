@@ -1,0 +1,69 @@
+env:
+  browser: true
+  es6: true
+extends:
+  - 'plugin:react/recommended'
+  - airbnb
+globals:
+  Atomics: readonly
+  SharedArrayBuffer: readonly
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+  ecmaVersion: 2018
+  sourceType: module
+plugins:
+  - react
+rules:
+  array-callback-return: 0
+  arrow-parens: 0
+  comma-dangle:
+    - 2
+    - only-multiline
+  comma-style: 0
+  func-names: 0
+  generator-star-spacing:
+    - 1
+    -
+      before: true
+      after: false
+  import/named: 0
+  max-len:
+    - 2
+    - 200
+  no-console: 0
+  no-param-reassign:
+    - 1
+    -
+      props: true
+      ignorePropertyModificationsFor:
+        - errors
+        - columnObject
+  no-unused-vars:
+    - 1
+    -
+      args: none
+      ignoreRestSiblings: true
+  object-curly-spacing:
+    - 2
+    - never
+  semi:
+    - 1
+    - never
+  react/no-array-index-key: 0
+  react/require-default-props: 0 # to be removed
+  react/prop-types: 0 # to be removed
+  react/forbid-prop-types: 1
+  react/no-children-prop: 0
+  react/jsx-no-bind:
+    - 1
+    -
+      allowBind: true
+      allowArrowFunctions: true
+  react/jsx-filename-extension: 0
+  sort-keys: 2
+settings:
+  import/resolver:
+    node:
+      paths:
+        - src
