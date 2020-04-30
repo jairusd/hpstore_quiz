@@ -1,5 +1,5 @@
 export default [
   'FETCH_AUTOCOMPLETE_CARGOES',
   'FETCH_CARGOES',
-  'RESET_CARGOES'
+  'FETCH_CARGO',
 ]

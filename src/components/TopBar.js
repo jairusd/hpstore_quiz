@@ -3,19 +3,23 @@ import React, {useState} from 'react'
 import {
   Autocomplete, CircularProgress, FontIcon, Button,
 } from 'react-md'
-import {FetchAutocompleteCargoes} from 'store/actions/cargo'
+import {FetchAutocompleteCargoes, FetchCargoes} from 'store/actions/cargo'
 import {useDispatch, useSelector} from 'react-redux'
 import {useDebounce, useDidUpdate} from 'hooks/utils'
 
-export default function Search({onSelectCargo}) {
+export default function TopBar({onSelectCargo}) {
   const [search, setSearch] = useState('')
   const debouncedSearch = useDebounce(search, 1000)
 
   const dispatch = useDispatch()
   const cargoes = useSelector(state => state.cargo.autocompleteCargoes)
-  const fetching = useSelector(state => state.action.fetching)
+  const fetching = useSelector(state => state.cargo.fetchingautocompleteCargoes)
 
-  const doFindStation = () => {
+  const loadCargoes = () => {
+    dispatch(FetchCargoes())
+  }
+
+  const doFindCargo = () => {
     dispatch(FetchAutocompleteCargoes(debouncedSearch))
   }
 
@@ -24,7 +28,7 @@ export default function Search({onSelectCargo}) {
   }
 
   const doKeypress = (e) => {
-    if (e.key === 'Enter') doFindStation(debouncedSearch)
+    if (e.key === 'Enter') doFindCargo(debouncedSearch)
   }
 
   const doAutoComplete = (index, matches, suggestion) => {
@@ -38,7 +42,7 @@ export default function Search({onSelectCargo}) {
   }
 
   useDidUpdate(() => {
-    if (!_.isNil(debouncedSearch)) doFindStation(debouncedSearch)
+    if (!_.isNil(debouncedSearch)) doFindCargo(debouncedSearch)
   }, [debouncedSearch])
 
   return (
@@ -48,7 +52,7 @@ export default function Search({onSelectCargo}) {
       <Autocomplete
         id="search"
         label="Search Cargo"
-        placeholder="Find a Cargo"
+        placeholder="Find a Cargo by Name"
         value={search}
         data={formatData(cargoes)}
         onChange={doChange}
@@ -64,7 +68,7 @@ export default function Search({onSelectCargo}) {
       />
 
       <div className="controls-container">
-        <Button flat primary className="btn-control">Load</Button>
+        <Button flat primary className="btn-control" onClick={loadCargoes}>Load</Button>
 
         <Button flat secondary className="btn-control">Save</Button>
       </div>

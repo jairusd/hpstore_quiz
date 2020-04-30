@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom'
 import {Provider} from 'react-redux'
 import setupStore from 'utils/store'
 import WebFontLoader from 'webfontloader'
-import App from 'components/App'
+import {BrowserRouter} from 'react-router-dom'
+import {renderRoutes} from 'react-router-config'
+import Routes from 'Routes'
 import './styles/index.scss'
 import * as serviceWorker from './serviceWorker'
 
@@ -17,7 +19,9 @@ WebFontLoader.load({
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <BrowserRouter>
+      {renderRoutes(Routes)}
+    </BrowserRouter>
   </Provider>, document.getElementById('root')
 )
 

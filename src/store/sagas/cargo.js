@@ -3,12 +3,12 @@ import {
 } from 'redux-saga/effects'
 import axios from 'utils/axios'
 import {ActionStart, ActionError, ActionSuccess} from 'store/actions/action'
-import {ResetCargoes} from 'store/actions/cargo'
 import actionTypes from '../types'
 
 const {
   FETCH_AUTOCOMPLETE_CARGOES,
   FETCH_CARGOES,
+  FETCH_CARGO,
   REQUESTED,
 } = actionTypes
 
@@ -32,13 +32,32 @@ function *FetchCargoes() {
     yield put(ActionError(FETCH_CARGOES, error))
     console.error('@error', error)
   }
-
-  yield put(ResetCargoes())
 }
 
-function *FetchAutocompleteCargoes() {
+function *FetchCargo({payload: id}) {
   const config = {
     method: 'GET',
+    url: `${REACT_APP_API}/cargoes/${id}`,
+  }
+
+  try {
+    yield put(ActionStart(FETCH_CARGO))
+    const {payload} = yield call(axios, config, FETCH_CARGO)
+
+    yield all([
+      put({payload, type: 'FETCH_CARGO'}),
+      put(ActionSuccess(FETCH_CARGO, payload))
+    ])
+  } catch (error) {
+    yield put(ActionError(FETCH_CARGO, error))
+    console.error('@error', error)
+  }
+}
+
+function *FetchAutocompleteCargoes({payload: keyword}) {
+  const config = {
+    method: 'GET',
+    params: keyword && {name_like: keyword},
     url: `${REACT_APP_API}/cargoes`,
   }
 
@@ -48,18 +67,16 @@ function *FetchAutocompleteCargoes() {
 
     yield all([
       put({payload, type: 'FETCH_AUTOCOMPLETE_CARGOES'}),
-      put(ActionSuccess(FETCH_AUTOCOMPLETE_CARGOES, payload))
+      put(ActionSuccess(FETCH_AUTOCOMPLETE_CARGOES))
     ])
   } catch (error) {
-    yield put(ActionError(FETCH_AUTOCOMPLETE_CARGOES, error))
+    yield put(ActionError(FETCH_AUTOCOMPLETE_CARGOES))
     console.error('@error', error)
   }
-
-  yield put(ResetCargoes())
 }
 
 export default function *() {
-  // GET
-  yield takeLatest(`${FETCH_CARGOES}__${REQUESTED}`, FetchCargoes)
   yield takeLatest(`${FETCH_AUTOCOMPLETE_CARGOES}__${REQUESTED}`, FetchAutocompleteCargoes)
+  yield takeLatest(`${FETCH_CARGOES}__${REQUESTED}`, FetchCargoes)
+  yield takeLatest(`${FETCH_CARGO}__${REQUESTED}`, FetchCargo)
 }

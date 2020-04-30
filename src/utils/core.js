@@ -13,10 +13,10 @@ export function hasKey(object, key) {
   return Object.prototype.hasOwnProperty.call(object, key)
 }
 
-export function addPending(action) {
+export function addPending(action, key) {
   return {
-    [`${action}::PENDING`]: (state, payload) => ({...state, fetching: true}),
-    [`${action}::ERROR`]: (state, payload) => ({...state, fetching: false}),
-    [`${action}::SUCCESS`]: (state, payload) => ({...state, fetching: false}),
+    [`${action}__PENDING`]: (state, payload) => ({...state, [`fetching${key}`]: true}),
+    [`${action}__ERROR`]: (state, payload) => ({...state, [`fetching${key}`]: false}),
+    [`${action}__SUCCESS`]: (state, payload) => ({...state, [`fetching${key}`]: false}),
   }
 }

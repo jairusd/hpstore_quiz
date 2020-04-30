@@ -1,18 +1,17 @@
-import React, {useState} from 'react'
-import Search from 'components/Search'
-import CargoInfo from 'components/CargoInfo'
+import React from 'react'
+import {renderRoutes} from 'react-router-config'
+import TopBar from 'components/TopBar'
 
-export default function App() {
-  const [cargo, setCargo] = useState({id: 1})
-
-  const doSelectStation = selected => {
-    setCargo(selected)
+export default function App({route, history}) {
+  const doSelectCargo = ({id}) => {
+    history.push(`/cargoes/${id}`)
   }
 
   return (
     <div>
-      <Search onSelectStation={doSelectStation} />
-      <CargoInfo cargo={cargo} key={cargo.id} />
+      <TopBar onSelectCargo={doSelectCargo} />
+
+      {renderRoutes(route.routes)}
     </div>
   )
 }
