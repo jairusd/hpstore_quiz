@@ -6,6 +6,24 @@
   top: 9px;
 }
 
+.cargo-link {
+  padding: 5px 10px;
+}
+
+.main-partition {
+  display: flex;
+}
+
+.side-bar {
+  min-width: 200px;
+  padding: 10px;
+}
+
+.main-content {
+  width: 100%;
+  padding: 10px;
+}
+
 .search-bar {
   display: flex;
   align-items: center;

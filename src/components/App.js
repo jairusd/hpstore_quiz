@@ -13,8 +13,13 @@ export default function App({route, history}) {
       <TopBar onSelectCargo={doSelectCargo} />
 
       <div className="main-partition">
-        <CargoList />
-        {renderRoutes(route.routes)}
+        <div className="side-bar">
+          <CargoList />
+        </div>
+
+        <div className="main-content">
+          {renderRoutes(route.routes)}
+        </div>
       </div>
     </div>
   )

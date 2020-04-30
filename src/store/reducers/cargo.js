@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   cargoes: [],
   fetchingAutocompleteCargoes: false,
   fetchingCargo: false,
+  fetchingCargoes: false,
 }
 
 const handlers = {
@@ -14,6 +15,7 @@ const handlers = {
   FETCH_CARGOES: (state, payload) => ({...state, cargoes: payload}),
   ...addPending('FETCH_AUTOCOMPLETE_CARGOES', 'autocompleteCargoes'),
   ...addPending('FETCH_CARGO', 'cargo'),
+  ...addPending('FETCH_CARGOES', 'cargoes'),
 }
 
 export default (state = INITIAL_STATE, action) => handleState(state, action, handlers)
