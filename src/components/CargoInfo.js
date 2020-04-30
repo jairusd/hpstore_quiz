@@ -14,16 +14,16 @@ export default function CargoInfo({match}) {
   const {name, email, boxes} = cargo || {}
 
   const [form, setForm] = useState({boxes: ''})
+  const [errors, setErrors] = useState({boxes: false})
 
   const doChange = (value, e) => {
-    setForm({
-      ...form,
-      [e.target.id]: value,
-    })
+    setForm({...form, [e.target.id]: value})
+    setErrors({...errors, boxes: isNaN(calcCargoBays(value))})
   }
 
   useEffect(() => {
     setForm({...form, boxes})
+    setErrors({...errors, boxes: isNaN(calcCargoBays(form.boxes))})
   }, [cargo?.id])
 
   useEffect(() => {
@@ -44,7 +44,9 @@ export default function CargoInfo({match}) {
           id="bays"
           label="Number of required cargo bays"
           placeholder="Number of required cargo bays"
-          value={isNaN(calcCargoBays(form.boxes)) ? 'Invalid cargo boxes value' : calcCargoBays(form.boxes)}
+          value={isNaN(calcCargoBays(form.boxes)) ? '' : calcCargoBays(form.boxes)}
+          error={errors.boxes}
+          errorText="Invalid cargo boxes value"
         />
 
         <TextField
@@ -53,6 +55,8 @@ export default function CargoInfo({match}) {
           placeholder="Cargo Boxes delimited by comma"
           value={form.boxes}
           onChange={doChange}
+          error={errors.boxes}
+          errorText="Invalid cargo boxes value"
         />
       </CardText>
     </Card>
