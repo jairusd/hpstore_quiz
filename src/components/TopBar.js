@@ -7,13 +7,13 @@ import {FetchAutocompleteCargoes, FetchCargoes} from 'store/actions/cargo'
 import {useDispatch, useSelector} from 'react-redux'
 import {useDebounce, useDidUpdate} from 'hooks/utils'
 
-export default function TopBar({onSelectCargo}) {
+export default function TopBar({history}) {
   const [search, setSearch] = useState('')
   const debouncedSearch = useDebounce(search, 1000)
 
   const dispatch = useDispatch()
   const cargoes = useSelector(state => state.cargo.autocompleteCargoes)
-  const fetching = useSelector(state => state.cargo.fetchingautocompleteCargoes)
+  const fetching = useSelector(state => state.cargo.fetchingAutocompleteCargoes)
 
   const loadCargoes = () => {
     dispatch(FetchCargoes())
@@ -32,7 +32,8 @@ export default function TopBar({onSelectCargo}) {
   }
 
   const doAutoComplete = (index, matches, suggestion) => {
-    onSelectCargo(suggestion[matches])
+    const selected = suggestion[matches]
+    history.push(`/cargoes/${selected.id}`)
   }
 
   const formatData = data => {
@@ -59,7 +60,7 @@ export default function TopBar({onSelectCargo}) {
         onAutocomplete={doAutoComplete}
         onKeyPress={doKeypress}
         dataLabel="dataLabel"
-        leftIcon={fetching ? <CircularProgress id="fetch sations" /> : <FontIcon>search</FontIcon>}
+        leftIcon={fetching ? <CircularProgress id="fetching cargoes" /> : <FontIcon>search</FontIcon>}
         inlineIndicator={search ? (
           <Button icon className="clear-search" onClick={() => setSearch('')}>
             clear

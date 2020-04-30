@@ -26,3 +26,14 @@ export function addPending(action, key) {
     [`${action}__SUCCESS`]: (state, payload) => ({...state, [stateKey]: false}),
   }
 }
+
+export function calcCargoBays(boxes) {
+  if (!boxes) return 0
+
+  const payload = boxes
+    .split(',')
+    .map(e => e.trim())
+    .reduce((acc, curr) => acc + parseInt(curr, 10), 0)
+
+  return Math.ceil(payload / 10)
+}

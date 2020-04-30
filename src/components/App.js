@@ -4,13 +4,9 @@ import TopBar from 'components/TopBar'
 import CargoList from 'components/CargoList'
 
 export default function App({route, history}) {
-  const doSelectCargo = ({id}) => {
-    history.push(`/cargoes/${id}`)
-  }
-
   return (
     <div>
-      <TopBar onSelectCargo={doSelectCargo} />
+      <TopBar history={history} />
 
       <div className="main-partition">
         <div className="side-bar">
