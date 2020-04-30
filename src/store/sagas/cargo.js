@@ -7,40 +7,51 @@ import {ResetCargoes} from 'store/actions/cargo'
 import actionTypes from '../types'
 
 const {
-  FETCH_SOURCES,
+  FETCH_AUTOCOMPLETE_CARGOES,
+  FETCH_CARGOES,
   REQUESTED,
 } = actionTypes
 
-const baseParams = {
-  country: 'NO',
-  municipality: 'HALDEN',
-  types: 'SensorSystem',
-}
+const {REACT_APP_API} = process.env
 
-const {REACT_APP_API_USERNAME} = process.env
-
-function *FetchSources({payload}) {
-  const params = payload ? {...baseParams, name: payload} : baseParams
-
+function *FetchCargoes() {
   const config = {
-    auth: {
-      username: REACT_APP_API_USERNAME,
-    },
     method: 'GET',
-    params,
-    url: '/sources/v0.jsonld',
+    url: `${REACT_APP_API}/cargoes`,
   }
 
   try {
-    yield put(ActionStart(FETCH_SOURCES))
-    const {payload: {data}} = yield call(axios, config, FETCH_SOURCES)
+    yield put(ActionStart(FETCH_CARGOES))
+    const {payload} = yield call(axios, config, FETCH_CARGOES)
 
     yield all([
-      put({payload: data, type: 'FETCH_SOURCES'}),
-      put(ActionSuccess(FETCH_SOURCES, data))
+      put({payload, type: 'FETCH_CARGOES'}),
+      put(ActionSuccess(FETCH_CARGOES, payload))
     ])
   } catch (error) {
-    yield put(ActionError(FETCH_SOURCES, error))
+    yield put(ActionError(FETCH_CARGOES, error))
+    console.error('@error', error)
+  }
+
+  yield put(ResetCargoes())
+}
+
+function *FetchAutocompleteCargoes() {
+  const config = {
+    method: 'GET',
+    url: `${REACT_APP_API}/cargoes`,
+  }
+
+  try {
+    yield put(ActionStart(FETCH_AUTOCOMPLETE_CARGOES))
+    const {payload} = yield call(axios, config, FETCH_AUTOCOMPLETE_CARGOES)
+
+    yield all([
+      put({payload, type: 'FETCH_AUTOCOMPLETE_CARGOES'}),
+      put(ActionSuccess(FETCH_AUTOCOMPLETE_CARGOES, payload))
+    ])
+  } catch (error) {
+    yield put(ActionError(FETCH_AUTOCOMPLETE_CARGOES, error))
     console.error('@error', error)
   }
 
@@ -49,5 +60,6 @@ function *FetchSources({payload}) {
 
 export default function *() {
   // GET
-  yield takeLatest(`${FETCH_SOURCES}__${REQUESTED}`, FetchSources)
+  yield takeLatest(`${FETCH_CARGOES}__${REQUESTED}`, FetchCargoes)
+  yield takeLatest(`${FETCH_AUTOCOMPLETE_CARGOES}__${REQUESTED}`, FetchAutocompleteCargoes)
 }

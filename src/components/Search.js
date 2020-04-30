@@ -3,7 +3,7 @@ import React, {useState} from 'react'
 import {
   Autocomplete, CircularProgress, FontIcon, Button,
 } from 'react-md'
-import {FetchCargoes} from 'store/actions/cargo'
+import {FetchAutocompleteCargoes} from 'store/actions/cargo'
 import {useDispatch, useSelector} from 'react-redux'
 import {useDebounce, useDidUpdate} from 'hooks/utils'
 
@@ -12,11 +12,11 @@ export default function Search({onSelectCargo}) {
   const debouncedSearch = useDebounce(search, 1000)
 
   const dispatch = useDispatch()
-  const cargoes = useSelector(state => state.cargo.cargoes)
-  const fetching = useSelector(state => state.cargo.fetching)
+  const cargoes = useSelector(state => state.cargo.autocompleteCargoes)
+  const fetching = useSelector(state => state.action.fetching)
 
   const doFindStation = () => {
-    dispatch(FetchCargoes(debouncedSearch))
+    dispatch(FetchAutocompleteCargoes(debouncedSearch))
   }
 
   const doChange = val => {
@@ -42,22 +42,32 @@ export default function Search({onSelectCargo}) {
   }, [debouncedSearch])
 
   return (
-    <Autocomplete
-      id="search"
-      label="Search Cargo"
-      placeholder="Find a Cargo"
-      value={search}
-      data={formatData(cargoes)}
-      onChange={doChange}
-      onAutocomplete={doAutoComplete}
-      onKeyPress={doKeypress}
-      dataLabel="dataLabel"
-      leftIcon={fetching ? <CircularProgress id="fetch sations" /> : <FontIcon>search</FontIcon>}
-      inlineIndicator={search && (
-        <Button icon className="clear-search" onClick={() => setSearch('')}>
-          clear
-        </Button>
-      )}
-    />
+    <div className="search-bar">
+      <h3 className="title">Cargo Planner</h3>
+
+      <Autocomplete
+        id="search"
+        label="Search Cargo"
+        placeholder="Find a Cargo"
+        value={search}
+        data={formatData(cargoes)}
+        onChange={doChange}
+        onAutocomplete={doAutoComplete}
+        onKeyPress={doKeypress}
+        dataLabel="dataLabel"
+        leftIcon={fetching ? <CircularProgress id="fetch sations" /> : <FontIcon>search</FontIcon>}
+        inlineIndicator={search ? (
+          <Button icon className="clear-search" onClick={() => setSearch('')}>
+            clear
+          </Button>
+        ) : undefined}
+      />
+
+      <div className="controls-container">
+        <Button flat primary className="btn-control">Load</Button>
+
+        <Button flat secondary className="btn-control">Save</Button>
+      </div>
+    </div>
   )
 }
