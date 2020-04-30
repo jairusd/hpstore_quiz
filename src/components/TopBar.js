@@ -3,7 +3,7 @@ import React, {useState} from 'react'
 import {
   Autocomplete, CircularProgress, FontIcon, Button,
 } from 'react-md'
-import {FetchAutocompleteCargoes, FetchCargoes} from 'store/actions/cargo'
+import {FetchAutocompleteCargoes, FetchCargoes, UpdateCargo} from 'store/actions/cargo'
 import {useDispatch, useSelector} from 'react-redux'
 import {useDebounce, useDidUpdate} from 'hooks/utils'
 
@@ -14,8 +14,13 @@ export default function TopBar({history}) {
   const dispatch = useDispatch()
   const cargoes = useSelector(state => state.cargo.autocompleteCargoes)
   const fetching = useSelector(state => state.cargo.fetchingAutocompleteCargoes)
+  const form = useSelector(state => state.cargo.cargoForm)
 
-  const loadCargoes = () => {
+  const doSaveForm = () => {
+    dispatch(UpdateCargo(form))
+  }
+
+  const doLoadCargoes = () => {
     dispatch(FetchCargoes())
   }
 
@@ -69,9 +74,9 @@ export default function TopBar({history}) {
       />
 
       <div className="controls-container">
-        <Button flat primary className="btn-control" onClick={loadCargoes}>Load</Button>
+        <Button flat primary className="btn-control" onClick={doLoadCargoes}>Load</Button>
 
-        <Button flat secondary className="btn-control">Save</Button>
+        <Button flat secondary className="btn-control" onClick={doSaveForm}>Save</Button>
       </div>
     </div>
   )

@@ -22,7 +22,7 @@ export default function CargoInfo({match}) {
     setForm(formUpdate)
     setErrors({...errors, boxes: Number.isNaN(calcCargoBays(value))})
 
-    dispatch(UpdateCargoForm(formUpdate))
+    dispatch(UpdateCargoForm({...cargo, ...formUpdate}))
   }
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function CargoInfo({match}) {
     setForm(formUpdate)
     setErrors({...errors, boxes: Number.isNaN(calcCargoBays(form.boxes))})
 
-    dispatch(UpdateCargoForm(formUpdate))
+    dispatch(UpdateCargoForm({...cargo, ...formUpdate}))
   }, [cargo?.id])
 
   useEffect(() => {

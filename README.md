@@ -1,12 +1,16 @@
 # SpaceX Cargo Planner
 
+## Starting the App
+
+Just run `yarn start` after creating `.env` file from `.env.example`
+
 SpaceX is experiencing an increasing demand of shipments to Mars and has commissioned an application to automate the needed cargo space calculations.
 
 ## High level overview
 
 The application should load existing set of shipments over the network. After which they can be filtered, viewed, edited and saved locally for later viewing.
 
-As a first feature it will calculate the required number of cargo bays for each shipment. 
+As a first feature it will calculate the required number of cargo bays for each shipment.
 
 ## UI
 

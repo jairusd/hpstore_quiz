@@ -46,6 +46,21 @@
   }
 }
 
+.toast {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.toast--success {
+    background-color: $md-green-400
+  }
+
+  &.toast--error {
+    background-color: $md-red-400
+  }
+}
+
+
 @media (min-width: 600px) {
   .search-bar {
     flex-direction: row;
