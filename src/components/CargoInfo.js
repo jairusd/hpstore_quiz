@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import {
-  Card, CardTitle, CardText
+  Card, CardTitle, CardText, LinearProgress,
 } from 'react-md'
 import {useSelector, useDispatch} from 'react-redux'
 import {FetchCargo} from 'store/actions/cargo'
@@ -8,10 +8,15 @@ import {FetchCargo} from 'store/actions/cargo'
 export default function CargoInfo({match}) {
   const dispatch = useDispatch()
   const cargo = useSelector(state => state.cargo.cargo)
+  const fetching = useSelector(state => state.cargo.fetchingCargo)
 
   useEffect(() => {
     dispatch(FetchCargo(match.params.id))
   }, [match.params.id])
+
+  if (fetching) {
+    return <LinearProgress />
+  }
 
   if (!cargo) return null
   const {name, email} = cargo

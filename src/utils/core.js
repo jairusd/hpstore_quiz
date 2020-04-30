@@ -13,10 +13,16 @@ export function hasKey(object, key) {
   return Object.prototype.hasOwnProperty.call(object, key)
 }
 
+export function upper(word) {
+  return word.replace(/^\w/, c => c.toUpperCase())
+}
+
 export function addPending(action, key) {
+  const stateKey = `fetching${upper(key)}`
+
   return {
-    [`${action}__PENDING`]: (state, payload) => ({...state, [`fetching${key}`]: true}),
-    [`${action}__ERROR`]: (state, payload) => ({...state, [`fetching${key}`]: false}),
-    [`${action}__SUCCESS`]: (state, payload) => ({...state, [`fetching${key}`]: false}),
+    [`${action}__PENDING`]: (state, payload) => ({...state, [stateKey]: true}),
+    [`${action}__ERROR`]: (state, payload) => ({...state, [stateKey]: false}),
+    [`${action}__SUCCESS`]: (state, payload) => ({...state, [stateKey]: false}),
   }
 }
