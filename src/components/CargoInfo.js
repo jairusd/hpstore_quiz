@@ -3,7 +3,7 @@ import {
   Card, CardTitle, CardText, LinearProgress, TextField,
 } from 'react-md'
 import {useSelector, useDispatch} from 'react-redux'
-import {FetchCargo} from 'store/actions/cargo'
+import {FetchCargo, UpdateCargoForm} from 'store/actions/cargo'
 import {calcCargoBays} from 'utils/core'
 
 export default function CargoInfo({match}) {
@@ -17,13 +17,21 @@ export default function CargoInfo({match}) {
   const [errors, setErrors] = useState({boxes: false})
 
   const doChange = (value, e) => {
-    setForm({...form, [e.target.id]: value})
-    setErrors({...errors, boxes: isNaN(calcCargoBays(value))})
+    const formUpdate = {...form, [e.target.id]: value}
+
+    setForm(formUpdate)
+    setErrors({...errors, boxes: Number.isNaN(calcCargoBays(value))})
+
+    dispatch(UpdateCargoForm(formUpdate))
   }
 
   useEffect(() => {
-    setForm({...form, boxes})
-    setErrors({...errors, boxes: isNaN(calcCargoBays(form.boxes))})
+    const formUpdate = {...form, boxes}
+
+    setForm(formUpdate)
+    setErrors({...errors, boxes: Number.isNaN(calcCargoBays(form.boxes))})
+
+    dispatch(UpdateCargoForm(formUpdate))
   }, [cargo?.id])
 
   useEffect(() => {
@@ -44,7 +52,7 @@ export default function CargoInfo({match}) {
           id="bays"
           label="Number of required cargo bays"
           placeholder="Number of required cargo bays"
-          value={isNaN(calcCargoBays(form.boxes)) ? '' : calcCargoBays(form.boxes)}
+          value={Number.isNaN(calcCargoBays(form.boxes)) ? '' : calcCargoBays(form.boxes)}
           error={errors.boxes}
           errorText="Invalid cargo boxes value"
         />
