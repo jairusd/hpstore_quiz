@@ -2,7 +2,9 @@
 
 ## Starting the App
 
-Just run `yarn start` after creating `.env` file from `.env.example`
+1. run 'yarn install'
+2. create `.env` file from `.env.example`
+3. run `yarn start`
 
 SpaceX is experiencing an increasing demand of shipments to Mars and has commissioned an application to automate the needed cargo space calculations.
 
