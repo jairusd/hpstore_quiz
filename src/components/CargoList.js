@@ -8,7 +8,7 @@ export default function CargoList() {
   const fetching = useSelector(state => state.cargo.fetchingCargoes)
 
   if (fetching) {
-    return <LinearProgress />
+    return <LinearProgress id="cargo list" />
   }
 
   if (!cargoes.length) {

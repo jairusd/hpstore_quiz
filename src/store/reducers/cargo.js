@@ -3,7 +3,7 @@ import {handleState, addPending} from 'utils/core'
 const INITIAL_STATE = {
   autocompleteCargoes: [],
   cargo: null,
-  cargoes: [],
+  cargoes: JSON.parse(localStorage.getItem('cargoes')) || [],
   fetchingAutocompleteCargoes: false,
   fetchingCargo: false,
   fetchingCargoes: false,

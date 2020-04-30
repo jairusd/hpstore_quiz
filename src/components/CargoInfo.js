@@ -15,7 +15,7 @@ export default function CargoInfo({match}) {
   }, [match.params.id])
 
   if (fetching) {
-    return <LinearProgress />
+    return <LinearProgress id="cargo info" />
   }
 
   if (!cargo) return null

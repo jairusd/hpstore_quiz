@@ -28,6 +28,7 @@ function *FetchCargoes() {
       put({payload, type: 'FETCH_CARGOES'}),
       put(ActionSuccess(FETCH_CARGOES, payload))
     ])
+    localStorage.setItem('cargoes', JSON.stringify(payload))
   } catch (error) {
     yield put(ActionError(FETCH_CARGOES, error))
     console.error('@error', error)
